@@ -1,4 +1,4 @@
-class Pokemon {
+export class Pokemon {
   private name: string;
   private lifePoints: number;
   private attacks: Attack[];

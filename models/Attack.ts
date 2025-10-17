@@ -1,4 +1,4 @@
-class Attack {
+export class Attack {
   private name: string;
   private damage: number;
   private usageLimit: number;

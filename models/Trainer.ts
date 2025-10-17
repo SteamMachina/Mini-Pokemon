@@ -1,4 +1,4 @@
-class Trainer {
+export class Trainer {
   private name: string;
   private level: number;
   private xp: number;
