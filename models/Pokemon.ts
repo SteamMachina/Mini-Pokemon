@@ -1,18 +1,23 @@
 export class Pokemon {
   private name: string;
   private lifePoints: number;
+  private maxLifePoints: number;
   private attacks: Attack[];
 
   public constructor(
     name: string = "Pikachu",
-    lifePoints: number = 100,
+    maxLifePoints: number = 100,
     attacks: Attack[] = []
   ) {
     if (!name || name.trim() === "") {
       throw new Error("Name cannot be empty");
     }
-    if (lifePoints === undefined || lifePoints === null || lifePoints < 0) {
-      throw new Error("Life points must be a non-negative number");
+    if (
+      lifePoints === undefined ||
+      maxLifePointslifePoints === null ||
+      maxLifePoints < 0
+    ) {
+      throw new Error("Max life points must be a non-negative number");
     }
     if (!attacks || !Array.isArray(attacks)) {
       throw new Error("Attacks must be an array");
@@ -21,7 +26,8 @@ export class Pokemon {
       throw new Error("Cannot have more than 4 attacks");
     }
     this.name = name;
-    this.lifePoints = lifePoints;
+    this.maxLifePoints = maxLifePoints;
+    this.lifePoints = maxLifePoints;
     this.attacks = attacks;
   }
 
@@ -31,6 +37,9 @@ export class Pokemon {
   }
   public getLifePoints(): number {
     return this.lifePoints;
+  }
+  public getMaxLifePoints(): number {
+    return this.maxLifePoints;
   }
   public getAttacks(): Attack[] {
     return this.attacks;
@@ -50,6 +59,17 @@ export class Pokemon {
     }
     this.lifePoints = lifePoints;
     return this.lifePoints;
+  }
+  public setMaxLifePoints(maxLifePoints: number): number {
+    if (
+      maxLifePoints === undefined ||
+      maxLifePoints === null ||
+      MaxlifePoints < 0
+    ) {
+      throw new Error("Life points must be a non-negative number");
+    }
+    this.maxLifePoints = maxLifePoints;
+    return this.maxLifePoints;
   }
   public setAttacks(attacks: Attack[]): Attack[] {
     if (!attacks || !Array.isArray(attacks)) {
@@ -75,7 +95,7 @@ export class Pokemon {
   }
 
   public heal(): number {
-    this.lifePoints = 100;
+    this.lifePoints = this.maxLifePoints;
     return this.lifePoints;
   }
 
