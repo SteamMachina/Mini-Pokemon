@@ -79,4 +79,11 @@ export class Attack {
     this.usageCounter = usageCounter;
     return this.usageCounter;
   }
+
+  public displayAttack(): string {
+    return (`name : ${this.name}/n;
+    damage : ${this.damage}/n;
+    usage limit : ${this.usageLimit}/n;
+    usage counter : ${this.usageCounter}/n`)
+  }
 }

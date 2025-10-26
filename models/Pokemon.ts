@@ -1,3 +1,5 @@
+import { Attack } from "./Attack";
+
 export class Pokemon {
   private name: string;
   private lifePoints: number;
@@ -6,6 +8,7 @@ export class Pokemon {
 
   public constructor(
     name: string = "Pikachu",
+    lifePoints: number = 100,
     maxLifePoints: number = 100,
     attacks: Attack[] = []
   ) {
@@ -14,7 +17,7 @@ export class Pokemon {
     }
     if (
       lifePoints === undefined ||
-      maxLifePointslifePoints === null ||
+      maxLifePoints === null ||
       maxLifePoints < 0
     ) {
       throw new Error("Max life points must be a non-negative number");
@@ -27,7 +30,7 @@ export class Pokemon {
     }
     this.name = name;
     this.maxLifePoints = maxLifePoints;
-    this.lifePoints = maxLifePoints;
+    this.lifePoints = lifePoints;
     this.attacks = attacks;
   }
 
@@ -64,7 +67,7 @@ export class Pokemon {
     if (
       maxLifePoints === undefined ||
       maxLifePoints === null ||
-      MaxlifePoints < 0
+      maxLifePoints < 0
     ) {
       throw new Error("Life points must be a non-negative number");
     }

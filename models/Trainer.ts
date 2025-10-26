@@ -1,3 +1,5 @@
+import { Pokemon } from "./Pokemon";
+
 export class Trainer {
   private name: string;
   private level: number;
