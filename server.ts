@@ -1,14 +1,18 @@
 import dotenv from "dotenv";
-import express from "express";
-import { Request, Response } from "express";
-import { testConnection } from "config/database.ts";
+import express, { Request, Response } from "express";
+import path from "path";
+import { testConnection } from "./config/database";
 
 dotenv.config();
 const app = express();
 const port = Number(process.env.LOCALHOST_PORT || 3000);
 
+app.use(express.json())
+app.use(express.static('public'))
+app.use(express.static('views'))
+
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
+  res.sendFile(path.join(__dirname, "views", "home.html"));
 });
 
 testConnection()
