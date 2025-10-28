@@ -65,3 +65,4 @@ Arène 2 :
 - npm install pg
 - npm install --save-dev @types/pg
 - npm install dotenv
+- npx ts-node server.ts

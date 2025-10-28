@@ -30,7 +30,8 @@ CREATE TABLE attacks (
     attack_id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     damage INT NOT NULL CHECK (damage >= 0),
-    usage_limit INT NOT NULL CHECK (usage_limit >= 0)
+    usage_limit INT NOT NULL CHECK (usage_limit >= 0),
+    usage_counter INT DEFAULT 0 CHECK (usage_limit >= 0)
 );
 
 -- Junction table: Trainer owns Pokemon (one-to-many)
