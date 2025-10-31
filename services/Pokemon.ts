@@ -99,17 +99,31 @@ export class Pokemon {
 
   public heal(): number {
     this.lifePoints = this.maxLifePoints;
+    // reset usage counters of all attacks upon heal (taverne)
+    this.attacks.forEach((atk) => atk.resetUsage());
     return this.lifePoints;
   }
 
-  public attack(attackIndex: number, victim: Pokemon): void {
-    if (attackIndex === undefined || attackIndex === null || attackIndex < 0) {
-      throw new Error("Attack index must be a non-negative number");
+  public attack(attack: Attack, victim: Pokemon): void {
+    if (!attack.canUse()) {
+      throw new Error("Selected attack cannot be used anymore");
     }
-    if (attackIndex >= this.attacks.length) {
-      throw new Error("Attack index out of range");
+    attack.useOnce();
+    const remaining = Math.max(0, victim.getLifePoints() - attack.getDamage());
+    victim.setLifePoints(remaining);
+  }
+
+  public selectRandomAttack(): Attack | null {
+    const useableAttacks: Attack[] = [];
+    this.attacks.forEach(attack => {
+      if (attack.canUse()) {
+        useableAttacks.push(attack);
+      }
+    });
+    if (useableAttacks.length === 0) {
+      return null;
     }
-    const selectedAttack = this.attacks[attackIndex];
-    victim.setLifePoints(victim.getLifePoints() - selectedAttack.getDamage());
+    const index = Math.floor(Math.random() * useableAttacks.length);
+    return useableAttacks[index] || null;
   }
 }

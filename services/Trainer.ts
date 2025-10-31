@@ -97,4 +97,16 @@ export class Trainer {
       this.xp -= 10;
     }
   }
+
+  public chooseRandomPokemon(): Pokemon{
+    let alivePokemons: Pokemon[] = [];
+    this.pokemonList.forEach(pokemon => {
+        if (pokemon.getLifePoints() > 0){
+            alivePokemons.push(pokemon);
+        }
+    });
+    const index = Math.floor(Math.random() * alivePokemons.length);
+    const chosenPokemon = alivePokemons[index];
+    return chosenPokemon;
+}
 }

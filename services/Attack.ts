@@ -80,10 +80,27 @@ export class Attack {
     return this.usageCounter;
   }
 
+  // usage helpers
+  public canUse(): boolean {
+    return this.usageCounter < this.usageLimit;
+  }
+
+  public useOnce(): number {
+    if (!this.canUse()) {
+      throw new Error("Attack usage limit reached");
+    }
+    this.usageCounter += 1;
+    return this.usageCounter;
+  }
+
+  public resetUsage(): void {
+    this.usageCounter = 0;
+  }
+
   public displayAttack(): string {
-    return (`name : ${this.name}/n;
-    damage : ${this.damage}/n;
-    usage limit : ${this.usageLimit}/n;
-    usage counter : ${this.usageCounter}/n`)
+    return (`name : ${this.name}\n;
+    damage : ${this.damage}\n;
+    usage limit : ${this.usageLimit}\n;
+    usage counter : ${this.usageCounter}\n`)
   }
 }
