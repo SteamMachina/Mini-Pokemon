@@ -121,6 +121,7 @@ export class Pokemon {
       }
     });
     if (useableAttacks.length === 0) {
+      console.log(`${this.getName()} has no useable attacks.`);
       return null;
     }
     const index = Math.floor(Math.random() * useableAttacks.length);

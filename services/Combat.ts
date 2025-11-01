@@ -2,7 +2,7 @@ import { Trainer } from "./Trainer";
 import { Pokemon } from "./Pokemon";
 
 export class Combat {
-  randomBattle(trainers: Trainer[]): void {
+  public runBattle(trainers: Trainer[], isRandom: boolean): void {
     // choose random starter
     let trainer1: Trainer;
     let trainer2: Trainer;
@@ -15,19 +15,31 @@ export class Combat {
     }
     console.log(`${trainer1.getName} starts.`);
 
-    // heal all pokemons
-    trainer1.healAllPokemons();
-    trainer2.healAllPokemons();
-    console.log(`All pokemons healed.`);
+    if (isRandom) {
+      // heal all pokemons
+      trainer1.healAllPokemons();
+      trainer2.healAllPokemons();
+      console.log(`All pokemons healed.`);
 
-    // select pokemons
-    const pokemon1 = trainer1.chooseRandomPokemon();
-    if (pokemon1 === null) {
-      return;
-    }
-    const pokemon2 = trainer2.chooseRandomPokemon();
-    if (pokemon2 === null) {
-      return;
+      // select pokemons
+      var pokemon1 = trainer1.chooseRandomPokemon();
+      if (pokemon1 === null) {
+        return;
+      }
+      var pokemon2 = trainer2.chooseRandomPokemon();
+      if (pokemon2 === null) {
+        return;
+      }
+    } else {
+      // select pokemons
+      var pokemon1 = trainer1.chooseBestPokemon();
+      if (pokemon1 === null) {
+        return;
+      }
+      var pokemon2 = trainer2.chooseBestPokemon();
+      if (pokemon2 === null) {
+        return;
+      }
     }
 
     // battle until a pokemon dies
@@ -60,7 +72,7 @@ export class Combat {
     return;
   }
 
-  randomGym(trainers: Trainer[]): void {
+  public runGym(trainers: Trainer[], isRandom: boolean): void {
     // battle 100 times
     let battle = 1;
     while (
@@ -69,7 +81,7 @@ export class Combat {
       trainers[0].livePokemons().length != 0
     ) {
       console.log(`battle ${battle} : `);
-      this.randomBattle(trainers);
+      this.runBattle(trainers, isRandom);
       battle++;
     }
 
@@ -97,5 +109,22 @@ export class Combat {
         console.log(`It's a draw.`);
       }
     }
+  }
+
+  public randomBattle(trainers: Trainer[]): void {
+    this.runBattle(trainers, true);
+    return;
+  }
+  public randomGym(trainers: Trainer[]): void {
+    this.runGym(trainers, true);
+    return;
+  }
+  public deterministBattle(trainers: Trainer[]): void {
+    this.runBattle(trainers, false);
+    return;
+  }
+  public deterministGym(trainers: Trainer[]): void {
+    this.runGym(trainers, false);
+    return;
   }
 }

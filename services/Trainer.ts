@@ -120,6 +120,21 @@ export class Trainer {
     return chosenPokemon;
   }
 
+  chooseBestPokemon(): Pokemon | null {
+    let livePokemons = this.livePokemons();
+    if (livePokemons.length === 0) {
+      return null;
+    }
+    let bestPokemon = livePokemons[0];
+    livePokemons.forEach((pokemon) => {
+      if (pokemon.getLifePoints() > bestPokemon.getLifePoints()) {
+        bestPokemon = pokemon;
+      }
+    });
+    console.log(`${this.getName()} chose ${bestPokemon.getName()}.`);
+    return bestPokemon;
+  }
+
   public dispScore(): void {
     console.log(
       `${this.getName()} is level ${this.getLevel()} with ${this.getXP()} XP.`
