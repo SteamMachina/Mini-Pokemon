@@ -44,9 +44,9 @@ export class PokemonModel {
       where pokemon_id = $4
     `;
     const values = [
-      pokemon.getName,
-      pokemon.getLifePoints,
-      pokemon.getMaxLifePoints,
+      pokemon.getName(),
+      pokemon.getLifePoints(),
+      pokemon.getMaxLifePoints(),
       id,
     ];
     const result = await pool.query(query, values);

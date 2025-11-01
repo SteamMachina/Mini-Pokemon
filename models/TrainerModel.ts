@@ -39,7 +39,7 @@ export class TrainerModel {
       set name = $1, level = $2, experience = $3
       where trainer_id = $4
     `;
-    const values = [trainer.getName, trainer.getLevel, trainer.getXP, id];
+    const values = [trainer.getName(), trainer.getLevel(), trainer.getXP(), id];
     const result = await pool.query(query, values);
     const row = result.rows[0];
     return new Trainer(row.name, row.level, row.experience);

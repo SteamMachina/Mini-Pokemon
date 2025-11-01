@@ -42,14 +42,14 @@ export class AttackModel {
   async update(id: number, attack: Attack): Promise<Attack> {
     const query = `
       update attacks
-      set name = $1, damage = $2, usage_limit = $3, usage_counter = 4
+      set name = $1, damage = $2, usage_limit = $3, usage_counter = $4
       where attack_id = $5
     `;
     const values = [
-      attack.getDamage,
-      attack.getDamage,
-      attack.getUsageLimit,
-      attack.getUsageCounter,
+      attack.getName(),
+      attack.getDamage(),
+      attack.getUsageLimit(),
+      attack.getUsageCounter(),
       id,
     ];
     const result = await pool.query(query, values);
