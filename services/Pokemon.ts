@@ -115,7 +115,7 @@ export class Pokemon {
 
   public selectRandomAttack(): Attack | null {
     const useableAttacks: Attack[] = [];
-    this.attacks.forEach(attack => {
+    this.attacks.forEach((attack) => {
       if (attack.canUse()) {
         useableAttacks.push(attack);
       }
@@ -125,5 +125,9 @@ export class Pokemon {
     }
     const index = Math.floor(Math.random() * useableAttacks.length);
     return useableAttacks[index] || null;
+  }
+
+  public dispLifePoints(): void {
+    console.log(`${this.getName()} has ${this.getLifePoints()} life points.`);
   }
 }

@@ -87,10 +87,8 @@ export class Trainer {
     });
   }
 
-  public gainXP(points: number): void {
-    if (points === undefined || points === null || points < 0) {
-      throw new Error("XP points must be a non-negative number");
-    }
+  public gainXP(): void {
+    const points = 1;
     this.xp += points;
     if (this.xp >= 10) {
       this.level += 1;
@@ -98,15 +96,33 @@ export class Trainer {
     }
   }
 
-  public chooseRandomPokemon(): Pokemon{
+  public livePokemons(): Pokemon[] {
     let alivePokemons: Pokemon[] = [];
-    this.pokemonList.forEach(pokemon => {
-        if (pokemon.getLifePoints() > 0){
-            alivePokemons.push(pokemon);
-        }
+    this.pokemonList.forEach((pokemon) => {
+      if (pokemon.getLifePoints() > 0) {
+        alivePokemons.push(pokemon);
+      }
     });
-    const index = Math.floor(Math.random() * alivePokemons.length);
-    const chosenPokemon = alivePokemons[index];
+    if (alivePokemons.length == 0) {
+      console.log(`${this.getName()} has no alive pokemons.`);
+    }
+    return alivePokemons;
+  }
+
+  chooseRandomPokemon(): Pokemon | null {
+    const livePokemons = this.livePokemons();
+    if (livePokemons.length === 0) {
+      return null;
+    }
+    const index = Math.floor(Math.random() * livePokemons.length);
+    const chosenPokemon = livePokemons[index];
+    console.log(`${this.getName()} chose ${chosenPokemon.getName()}.`);
     return chosenPokemon;
-}
+  }
+
+  public dispScore(): void {
+    console.log(
+      `${this.getName()} is level ${this.getLevel()} with ${this.getXP()} XP.`
+    );
+  }
 }
