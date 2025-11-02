@@ -104,4 +104,10 @@ router.put("/trainers/addpokemon", async (req: Request, res: Response) => {
   }
 });
 
+//route to add attack to pokemon
+//route défi aléatoire
+//route arène 1
+//route défi déterministe
+//route arène 2
+
 export default router;
