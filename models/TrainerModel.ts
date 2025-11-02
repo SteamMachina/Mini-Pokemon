@@ -45,6 +45,13 @@ export class TrainerModel {
     return new Trainer(row.name, row.level, row.experience);
   }
 
+  async addPokemon(trainerId: number, pokemonId: number): Promise<void> {
+    await pool.query(
+      "INSERT INTO trainer_pokemon (trainer_id, pokemon_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+      [trainerId, pokemonId]
+    );
+  }
+
   async delete(id: number): Promise<void> {
     const query = `
       delete from trainers 
