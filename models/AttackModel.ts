@@ -4,15 +4,14 @@ import { Attack } from "../services/Attack";
 export class AttackModel {
   async create(attack: Attack): Promise<number> {
     const query = `
-            insert into attacks (name, damage, usage_limit, usageCounter)
-            values ($1, $2, $3, $4)
+            insert into attacks (name, damage, usage_limit)
+            values ($1, $2, $3)
             returning attack_id
         `;
     const values = [
       attack.getName(),
       attack.getDamage(),
       attack.getUsageLimit(),
-      attack.getUsageCounter(),
     ];
     const result = await pool.query(query, values);
     return result.rows[0].attack_id;
@@ -25,7 +24,13 @@ export class AttackModel {
     const result = await pool.query(query);
     return result.rows.map(
       (row) =>
-        new Attack(row.name, row.damage, row.usage_limit, row.usage_counter)
+        new Attack(
+          row.name,
+          row.damage,
+          row.usage_limit,
+          row.usage_counter,
+          row.attack_id
+        )
     );
   }
 
@@ -36,7 +41,13 @@ export class AttackModel {
     `;
     const result = await pool.query(query, [id]);
     const row = result.rows[0];
-    return new Attack(row.name, row.damage, row.usage_limit, row.usage_counter);
+    return new Attack(
+      row.name,
+      row.damage,
+      row.usage_limit,
+      row.usage_counter,
+      row.attack_id
+    );
   }
 
   async update(id: number, attack: Attack): Promise<Attack> {

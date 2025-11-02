@@ -3,12 +3,14 @@ export class Attack {
   private damage: number;
   private usageLimit: number;
   private usageCounter: number;
+  private id: number;
 
   public constructor(
     name: string = "Wait",
     damage: number = 0,
     usageLimit: number = 100,
-    usageCounter: number = 0
+    usageCounter: number = 0,
+    id: number = 0
   ) {
     if (!name || name.trim() === "") {
       throw new Error("Name cannot be empty");
@@ -30,6 +32,7 @@ export class Attack {
     this.damage = damage;
     this.usageLimit = usageLimit;
     this.usageCounter = usageCounter;
+    this.id = id;
   }
 
   // getters
@@ -45,7 +48,9 @@ export class Attack {
   public getUsageCounter(): number {
     return this.usageCounter;
   }
-
+  public getId(): number {
+    return this.id;
+  }
   // setters
   public setName(name: string): string {
     if (!name || name.trim() === "") {
@@ -80,6 +85,14 @@ export class Attack {
     return this.usageCounter;
   }
 
+  public setId(id: number): number {
+    if (id === undefined || id === null || id < 0) {
+      throw new Error("ID must be a non-negative number");
+    }
+    this.id = id;
+    return this.id;
+  }
+
   // usage helpers
   public canUse(): boolean {
     return this.usageCounter < this.usageLimit;
@@ -98,9 +111,9 @@ export class Attack {
   }
 
   public displayAttack(): string {
-    return (`name : ${this.name}\n;
+    return `name : ${this.name}\n;
     damage : ${this.damage}\n;
     usage limit : ${this.usageLimit}\n;
-    usage counter : ${this.usageCounter}\n`)
+    usage counter : ${this.usageCounter}\n`;
   }
 }

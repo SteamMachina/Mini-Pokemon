@@ -5,12 +5,14 @@ export class Trainer {
   private level: number;
   private xp: number;
   private pokemonList: Pokemon[];
+  private id: number;
 
   public constructor(
     name: string = "Sasha",
     level: number = 0,
     xp: number = 0,
-    pokemonList: Pokemon[] = []
+    pokemonList: Pokemon[] = [],
+    id: number = 0
   ) {
     if (!name || name.trim() === "") {
       throw new Error("Name cannot be empty");
@@ -28,6 +30,7 @@ export class Trainer {
     this.level = level;
     this.xp = xp;
     this.pokemonList = pokemonList;
+    this.id = id;
   }
 
   // getters
@@ -43,7 +46,9 @@ export class Trainer {
   public getPokemonList(): Pokemon[] {
     return this.pokemonList;
   }
-
+  public getId(): number {
+    return this.id;
+  }
   // setters
   public setName(name: string): string {
     if (!name || name.trim() === "") {
@@ -72,6 +77,14 @@ export class Trainer {
     }
     this.pokemonList = pokemonList;
     return this.pokemonList;
+  }
+
+  public setId(id: number): number {
+    if (id === undefined || id === null || id < 0) {
+      throw new Error("ID must be a non-negative number");
+    }
+    this.id = id;
+    return this.id;
   }
 
   // other methods

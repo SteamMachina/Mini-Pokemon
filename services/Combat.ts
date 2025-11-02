@@ -2,7 +2,7 @@ import { Trainer } from "./Trainer";
 import { Pokemon } from "./Pokemon";
 
 export class Combat {
-  public runBattle(trainers: Trainer[], isRandom: boolean): void {
+  public runBattle(trainers: Trainer[], isRandom: boolean): Trainer[] {
     // choose random starter
     let trainer1: Trainer;
     let trainer2: Trainer;
@@ -13,7 +13,7 @@ export class Combat {
       trainer1 = trainers[1];
       trainer2 = trainers[0];
     }
-    console.log(`${trainer1.getName} starts.`);
+    console.log(`${trainer1.getName()} starts.`);
 
     if (isRandom) {
       // heal all pokemons
@@ -24,21 +24,21 @@ export class Combat {
       // select pokemons
       var pokemon1 = trainer1.chooseRandomPokemon();
       if (pokemon1 === null) {
-        return;
+        return [trainer1, trainer2];
       }
       var pokemon2 = trainer2.chooseRandomPokemon();
       if (pokemon2 === null) {
-        return;
+        return [trainer1, trainer2];
       }
     } else {
       // select pokemons
       var pokemon1 = trainer1.chooseBestPokemon();
       if (pokemon1 === null) {
-        return;
+        return [trainer1, trainer2];
       }
       var pokemon2 = trainer2.chooseBestPokemon();
       if (pokemon2 === null) {
-        return;
+        return [trainer1, trainer2];
       }
     }
 
@@ -47,12 +47,31 @@ export class Combat {
     while (pokemon1.getLifePoints() > 0 && pokemon2.getLifePoints() > 0) {
       round++;
       console.log(`Round ${round}:`);
+
+      // Pokemon 1 attacks
       let attack1 = pokemon1.selectRandomAttack();
-      console.log(`${pokemon1.getName} used ${attack1}.`);
+      if (attack1 === null) {
+        console.log(`${pokemon1.getName()} has no usable attacks.`);
+        break;
+      }
+      console.log(`${pokemon1.getName()} used ${attack1.getName()}.`);
+      pokemon1.attack(attack1, pokemon2);
       pokemon1.dispLifePoints();
       pokemon2.dispLifePoints();
+
+      // Check if pokemon2 is dead
+      if (pokemon2.getLifePoints() <= 0) {
+        break;
+      }
+
+      // Pokemon 2 attacks
       let attack2 = pokemon2.selectRandomAttack();
-      console.log(`${pokemon2.getName} used ${attack2}.`);
+      if (attack2 === null) {
+        console.log(`${pokemon2.getName()} has no usable attacks.`);
+        break;
+      }
+      console.log(`${pokemon2.getName()} used ${attack2.getName()}.`);
+      pokemon2.attack(attack2, pokemon1);
       pokemon1.dispLifePoints();
       pokemon2.dispLifePoints();
     }
@@ -60,29 +79,44 @@ export class Combat {
     // check who won
     if (pokemon1.getLifePoints() > 0) {
       trainer1.gainXP();
-      console.log(`${trainer1} with ${pokemon1} won the rounds.`);
+      console.log(
+        `${trainer1.getName()} with ${pokemon1.getName()} won the rounds.`
+      );
       trainer1.dispScore();
       trainer2.dispScore();
     } else {
       trainer2.gainXP();
-      console.log(`${trainer2} with ${pokemon2} won the rounds.`);
+      console.log(
+        `${trainer2.getName()} with ${pokemon2.getName()} won the rounds.`
+      );
       trainer1.dispScore();
       trainer2.dispScore();
     }
-    return;
+    return [trainer1, trainer2];
   }
 
-  public runGym(trainers: Trainer[], isRandom: boolean): void {
+  public runGym(trainers: Trainer[], isRandom: boolean): Trainer[] {
     // battle 100 times
+    // heal all pokemons
     let battle = 1;
-    while (
-      battle <= 100 &&
-      trainers[0].livePokemons().length != 0 &&
-      trainers[0].livePokemons().length != 0
-    ) {
-      console.log(`battle ${battle} : `);
-      this.runBattle(trainers, isRandom);
-      battle++;
+    if (isRandom) {
+      trainers[0].healAllPokemons();
+      trainers[1].healAllPokemons();
+      while (battle <= 100) {
+        console.log(`battle ${battle} : `);
+        this.runBattle(trainers, isRandom);
+        battle++;
+      }
+    } else {
+      while (
+        battle <= 100 &&
+        trainers[0].livePokemons().length != 0 &&
+        trainers[1].livePokemons().length != 0
+      ) {
+        console.log(`battle ${battle} : `);
+        this.runBattle(trainers, isRandom);
+        battle++;
+      }
     }
 
     // check who won
@@ -109,22 +143,23 @@ export class Combat {
         console.log(`It's a draw.`);
       }
     }
+    return [trainer1, trainer2];
   }
 
-  public randomBattle(trainers: Trainer[]): void {
-    this.runBattle(trainers, true);
-    return;
+  public randomBattle(inputTrainers: Trainer[]): Trainer[] {
+    const trainers = this.runBattle(inputTrainers, true);
+    return trainers;
   }
-  public randomGym(trainers: Trainer[]): void {
-    this.runGym(trainers, true);
-    return;
+  public randomGym(inputTrainers: Trainer[]): Trainer[] {
+    const trainers = this.runGym(inputTrainers, true);
+    return trainers;
   }
-  public deterministBattle(trainers: Trainer[]): void {
-    this.runBattle(trainers, false);
-    return;
+  public deterministBattle(inputTrainers: Trainer[]): Trainer[] {
+    const trainers = this.runBattle(inputTrainers, false);
+    return trainers;
   }
-  public deterministGym(trainers: Trainer[]): void {
-    this.runGym(trainers, false);
-    return;
+  public deterministGym(inputTrainers: Trainer[]): Trainer[] {
+    const trainers = this.runGym(inputTrainers, false);
+    return trainers;
   }
 }

@@ -5,12 +5,14 @@ export class Pokemon {
   private lifePoints: number;
   private maxLifePoints: number;
   private attacks: Attack[];
+  private id: number;
 
   public constructor(
     name: string = "Pikachu",
     lifePoints: number = 100,
     maxLifePoints: number = 100,
-    attacks: Attack[] = []
+    attacks: Attack[] = [],
+    id: number = 0
   ) {
     if (!name || name.trim() === "") {
       throw new Error("Name cannot be empty");
@@ -32,6 +34,7 @@ export class Pokemon {
     this.maxLifePoints = maxLifePoints;
     this.lifePoints = lifePoints;
     this.attacks = attacks;
+    this.id = id;
   }
 
   // getters
@@ -46,6 +49,10 @@ export class Pokemon {
   }
   public getAttacks(): Attack[] {
     return this.attacks;
+  }
+
+  public getId(): number {
+    return this.id;
   }
 
   // setters
@@ -83,6 +90,14 @@ export class Pokemon {
     }
     this.attacks = attacks;
     return this.attacks;
+  }
+
+  public setId(id: number): number {
+    if (id === undefined || id === null || id < 0) {
+      throw new Error("ID must be a non-negative number");
+    }
+    this.id = id;
+    return this.id;
   }
 
   // other methods
